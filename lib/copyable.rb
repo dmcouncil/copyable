@@ -1,4 +1,7 @@
 require "copyable/version"
+require 'active_record'
+
+require_relative 'copyable/railtie' if defined?(Rails)
 
 require_relative 'copyable/config'
 require_relative 'copyable/copy_registry'
