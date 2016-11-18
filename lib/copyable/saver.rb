@@ -12,7 +12,7 @@ module Copyable
           ModelHooks.disable!(new_model.class)
         end
       end
-      new_model.save!
+      new_model.save!(validate: !skip_validations)
     end
 
   end

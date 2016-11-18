@@ -9,7 +9,7 @@ module Copyable
         def execute(association_list, original_model, new_model, skip_validations, skip_associations)
           @skip_validations = skip_validations
           association_list.each do |assoc_name, advice|
-            association = original_model.class.reflections[assoc_name.to_sym]
+            association = original_model.class.reflections[assoc_name.to_s]
             check_advice(association, advice, original_model)
             unless advice == :do_not_copy || skip_associations.include?(assoc_name.to_sym)
               copy_association(association, original_model, new_model)

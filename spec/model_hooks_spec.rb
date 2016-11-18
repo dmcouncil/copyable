@@ -7,24 +7,19 @@ describe Copyable::ModelHooks do
 
     describe '.disable!' do
       before(:each) do
-        puts "Dennis before!"
         Copyable::ModelHooks.disable!(CopyableTree)
       end
       after(:each) do
-        puts "Dennis after"
         Copyable::ModelHooks.reenable!(CopyableTree)
       end
       it 'should prevent callbacks from executing' do
-        puts "Dennis 1"
         expect {
-          tree = CopyableTree.create!(kind: 'magnolia')
+          CopyableTree.create!(kind: 'magnolia')
         }.to_not raise_error
-        puts "Dennis 2"
       end
       it 'should not prevent model actions from executing' do
-        puts "Dennis 4"
         expect(CopyableTree.count).to eq(0)
-        tree = CopyableTree.create!(kind: 'magnolia')
+        CopyableTree.create!(kind: 'magnolia')
         expect(CopyableTree.count).to eq(1)
       end
     end
