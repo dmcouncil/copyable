@@ -1,7 +1,7 @@
 module Copyable
   class OptionChecker
 
-    VALID_OPTIONS = [:override, :skip_validations]
+    VALID_OPTIONS = [:override, :skip_validations, :skip_associations]
     VALID_PRIVATE_OPTIONS = [:__called_recursively]  # for copyable's internal use only
 
     def self.check!(options)
@@ -16,6 +16,10 @@ module Copyable
           message << "  #{opt.inspect}\n"
         end
         raise CopyableError.new(message)
+      end
+      # :skip_associations needs to be an array if it's present
+      if (options[:skip_associations].present? && !options[:skip_associations].is_a?(Array))
+        raise CopyableError.new("When :skip_associations is used, it must be an array")
       end
     end
 

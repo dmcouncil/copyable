@@ -82,6 +82,13 @@ describe 'complex model hierarchies:' do
        ['moon roof warranty', 'twitter warranty', 'jazz warranty'])
     end
 
+    it 'should skip branches of the tree when directed' do
+      @vehicle2 = @vehicle1.create_copy!(skip_associations: [:copyable_amenities])
+      expect(CopyableVehicle.count).to eq(2)
+      expect(CopyableAmenity.count).to eq(3) # No new ones created
+      expect(CopyableWarranty.count).to eq(3) # Because the amenities weren't copied either
+    end
+
     it 'should create the expected records if copied multiple times' do
       # this test makes sure the SingleCopyEnforcer isn't too eager
       @vehicle1.create_copy!

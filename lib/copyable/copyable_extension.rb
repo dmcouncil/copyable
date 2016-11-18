@@ -59,7 +59,9 @@ module Copyable
               # for this brand new model, visit all of the associated models,
               # making new copies according to the instructions in the copyable
               # declaration
-              Declarations::Associations.execute(main.association_list, original_model, new_model, options[:skip_validations])
+
+              skip_associations = options[:skip_associations] || []
+              Declarations::Associations.execute(main.association_list, original_model, new_model, options[:skip_validations], skip_associations)
               # run the after_copy block if it exists
               Declarations::AfterCopy.execute(main.after_copy_block, original_model, new_model)
             ensure
