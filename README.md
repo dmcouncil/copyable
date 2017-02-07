@@ -267,4 +267,4 @@ So the recommended approach is to use `after_copy` to tweak the columns of the c
 
 ## About
 
-Copyable was developed at [the District Management Council](http://dmcouncil.org).
+Copyable was developed at [District Management Group](https://dmgroupK12.com).
