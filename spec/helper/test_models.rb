@@ -13,18 +13,6 @@ end
 
 
 #*******************************************************************************
-#  For testing observers.
-#
-
-class CopyableCar < ActiveRecord::Base
-  validates :make, presence: true
-  validates :model, presence: true
-  validates :year, presence: true
-end
-
-
-
-#*******************************************************************************
 #  For testing callbacks.
 #
 
