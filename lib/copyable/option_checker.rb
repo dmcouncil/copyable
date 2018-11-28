@@ -1,7 +1,7 @@
 module Copyable
   class OptionChecker
 
-    VALID_OPTIONS = [:override, :skip_validations, :skip_associations]
+    VALID_OPTIONS = [:override, :global_override, :skip_validations, :skip_associations]
     VALID_PRIVATE_OPTIONS = [:__called_recursively]  # for copyable's internal use only
 
     def self.check!(options)

@@ -6,9 +6,10 @@ module Copyable
 
         # this is the algorithm for copying associated records according to the
         # instructions given in the copyable declaration
-        def execute(association_list, original_model, new_model, skip_validations, skip_associations)
+        def execute(association_list, original_model, new_model, global_override = {}, skip_validations, skip_associations)
           @skip_validations = skip_validations
           @skip_associations = skip_associations
+          @global_override = global_override
           association_list.each do |assoc_name, advice|
             association = original_model.class.reflections[assoc_name.to_sym]
             check_advice(association, advice, original_model)
@@ -79,6 +80,7 @@ module Copyable
               copied_record = original_record.create_copy!(
                 override: { association.foreign_key => parent_model.id },
                 __called_recursively: true,
+                global_override: @global_override,
                 skip_validations: @skip_validations,
                 skip_associations: @skip_associations)
             else
