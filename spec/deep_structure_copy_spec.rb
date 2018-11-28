@@ -129,6 +129,20 @@ describe 'complex model hierarchies:' do
         expect(CopyableVehicle.count).to eq(2)
         expect(CopyableAmenity.count).to eq(2)
       end
+
+      context 'with a global override, can copy vehicle with new owner' do
+        before(:each) do
+          @jane = CopyableOwner.create!(name: 'Jane')
+        end
+
+        it 'should copy the records correctly' do
+          @copy_of_joes_car = @porsche.create_copy!(global_override: { copyable_owner_id: @jane.id })
+          expect(CopyableVehicle.count).to eq(2)
+          expect(CopyableAmenity.count).to eq(2)
+          expect(@copy_of_joes_car.copyable_owner_id).to eq(@jane.id)
+          expect(@copy_of_joes_car.copyable_amenities.map(&:copyable_owner_id).uniq).to eq([@jane.id])
+        end
+      end
     end
 
     context 'with many models, some having redundant associations' do

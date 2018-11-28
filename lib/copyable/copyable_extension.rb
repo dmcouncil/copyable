@@ -49,6 +49,8 @@ module Copyable
               # fill in each column of this brand new model according to the
               # instructions given in the copyable declaration
               column_overrides = options[:override] || {}
+              # merge with global override hash if exists
+              column_overrides = column_overrides.merge(options[:global_override]) if options[:global_override]
               Declarations::Columns.execute(main.column_list, original_model, new_model, column_overrides)
               # save that sucker!
               Copyable::Saver.save!(new_model, options[:skip_validations])
@@ -61,7 +63,7 @@ module Copyable
               # declaration
 
               skip_associations = options[:skip_associations] || []
-              Declarations::Associations.execute(main.association_list, original_model, new_model, options[:skip_validations], skip_associations)
+              Declarations::Associations.execute(main.association_list, original_model, new_model, options[:global_override], options[:skip_validations], skip_associations)
               # run the after_copy block if it exists
               Declarations::AfterCopy.execute(main.after_copy_block, original_model, new_model)
             ensure
