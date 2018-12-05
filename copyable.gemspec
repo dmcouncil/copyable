@@ -6,8 +6,8 @@ require 'copyable/version'
 Gem::Specification.new do |spec|
   spec.name          = "copyable"
   spec.version       = Copyable::VERSION
-  spec.authors       = ["Wyatt Greene", "Dennis Chan"]
-  spec.email         = ["dchan@dmcouncil.org"]
+  spec.authors       = ["Wyatt Greene", "Dennis Chan", "Anne Geiersbach", "Parker Morse"]
+  spec.email         = ["dchan@dmgroupK12.com", "ageiersbach@dmgroupK12.com", "pmorse@dmgroupK12.com"]
   spec.summary       = %q{ActiveRecord copier}
   spec.description   = %q{Copyable makes it easy to copy ActiveRecord models.}
   spec.homepage      = "https://github.com/dmcouncil/copyable"
