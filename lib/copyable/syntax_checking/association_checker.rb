@@ -10,7 +10,8 @@ module Copyable
     def expected_entries
       all_associations = model_class.reflect_on_all_associations
       required_associations = all_associations.select do |ass|
-        (ass.macro != :belongs_to) && ass.options[:through].blank?
+        !ass.is_a?(ActiveRecord::Reflection::BelongsToReflection) &&
+        !ass.is_a?(ActiveRecord::Reflection::ThroughReflection)
       end
       required_associations.map(&:name).map(&:to_s)
     end

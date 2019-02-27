@@ -11,7 +11,7 @@ module Copyable
           @skip_associations = skip_associations
           @global_override = global_override
           association_list.each do |assoc_name, advice|
-            association = original_model.class.reflections[assoc_name.to_sym]
+            association = original_model.class.reflections[assoc_name.to_s]
             check_advice(association, advice, original_model)
             unless advice == :do_not_copy || skip_associations.include?(assoc_name.to_sym)
               copy_association(association, original_model, new_model)
@@ -28,14 +28,14 @@ module Copyable
             message << "has unrecognized advice '#{advice}'."
             raise AssociationError.new(message)
           end
-          if association.macro == :has_and_belongs_to_many && advice == :copy
+          if association.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection) && advice == :copy
             message = "Error in copyable:associations of "
             message << "#{original_model.class.name}: the association '#{association.name}' "
             message << "only supports the :copy_only_habtm_join_records advice, not the :copy advice, "
             message << "because it is a has_and_belongs_to_many association."
             raise AssociationError.new(message)
           end
-          if association.macro != :has_and_belongs_to_many && advice == :copy_only_habtm_join_records
+          if !association.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection) && advice == :copy_only_habtm_join_records
             message = "Error in copyable:associations of "
             message << "#{original_model.class.name}: the association '#{association.name}' "
             message << "only supports the :copy advice, not the :copy_only_habtm_join_records advice, "
@@ -45,15 +45,14 @@ module Copyable
         end
 
         def copy_association(association, original_model, new_model)
-          case association.macro
-          when :has_many
+          if association.is_a?(ActiveRecord::Reflection::HasManyReflection)
             copy_has_many(association, original_model, new_model)
-          when :has_one
+          elsif association.is_a?(ActiveRecord::Reflection::HasOneReflection)
             copy_has_one(association, original_model, new_model)
-          when :has_and_belongs_to_many
+          elsif association.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
             copy_habtm(association, original_model, new_model)
           else
-            raise "Unsupported association #{association.macro}" # should never happen, since we filter out belongs_to
+            raise "Unsupported association #{association.class}" # should never happen, since we filter out belongs_to
           end
         end
 

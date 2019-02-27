@@ -121,16 +121,9 @@ The advice must be one of the following:
 
 ## Callbacks
 
-It depends on the situation as to whether you would want a particular callback to be fired when a model is copied.  Since the logic of callbacks is situational, Copyable makes the decision to completely disable all callbacks and observers for the duration of the `create_copy!` method.  The only exception are callbacks and observers related to validation.
-
-To make it easier to reason about the code, and for the sake of being obvious, every copyable declaration *must* include a declaration called `disable_all_callbacks_and_observers_except_validate`.  This declaration itself does not do anything; it exists as documentation.
-
-    copyable do
-      disable_all_callbacks_and_observers_except_validate
-      ...
-    end
-
-
+It depends on the situation as to whether you would want a particular callback to be fired when a model is copied.  Since the logic of callbacks is situational, Copyable makes the decision to bypass callbacks
+when saving the copied models by using raw SQL insert statements during the copy. It will check
+validations unless `skip_validations` is passed to `create_copy`.
 
 ## The After Copy Declaration
 
